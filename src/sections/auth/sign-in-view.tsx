@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
@@ -8,24 +8,41 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import LoadingButton from '@mui/lab/LoadingButton';
 import InputAdornment from '@mui/material/InputAdornment';
-
 import { useRouter } from 'src/routes/hooks';
-
 import { Iconify } from 'src/components/iconify';
+import { useNavigate } from 'react-router-dom';
 
-// ----------------------------------------------------------------------
+interface SignInViewProps {
+  onSignInSuccess: () => void;
+}
+export function SignInView({ onSignInSuccess }: SignInViewProps) {
+  const navigate = useNavigate();
+const [showPassword, setShowPassword] = useState(false);
 
-export function SignInView() {
-  const router = useRouter();
+  const handleSignIn = useCallback((event: React.MouseEvent) => {
+    event.preventDefault();
+    console.log("Sign-in button clicked!");
 
-  const [showPassword, setShowPassword] = useState(false);
+   // const token ='user_authenticated_token';
+   // localStorage.setItem('authToken', token);
 
-  const handleSignIn = useCallback(() => {
-    router.push('/');
-  }, [router]);
+    onSignInSuccess();
 
-  const renderForm = (
-    <Box display="flex" flexDirection="column" alignItems="flex-end">
+  navigate('/dashboard');
+}, [onSignInSuccess, navigate]);
+    
+  return (
+    <Box display="flex" flexDirection="column" alignItems="flex-center">
+      <Box gap={1.5} display="flex" flexDirection="column" alignItems="center" sx={{mb:5}}>
+        <Typography variant="h5">Sign in</Typography>
+        <Typography variant="body2" color="text.secondary">
+          Don&apos;t have an account?
+          <Link variant="subtitle2" sx={{ ml:0.5}}>
+          Get started
+          </Link>
+        </Typography>
+      </Box>
+      <Box display="flex" flexDirection="column" alignItems="flex-end">
       <TextField
         fullWidth
         name="email"
@@ -34,10 +51,6 @@ export function SignInView() {
         InputLabelProps={{ shrink: true }}
         sx={{ mb: 3 }}
       />
-
-      <Link variant="body2" color="inherit" sx={{ mb: 1.5 }}>
-        Forgot password?
-      </Link>
 
       <TextField
         fullWidth
@@ -68,43 +81,25 @@ export function SignInView() {
       >
         Sign in
       </LoadingButton>
+
+      <Link
+      href="/forgot-password"
+      variant="body2" 
+      color="inherit" 
+      sx={{ mb: 1.5 }}
+      >
+        Forgot password?
+      </Link>
     </Box>
-  );
+  
 
-  return (
-    <>
-      <Box gap={1.5} display="flex" flexDirection="column" alignItems="center" sx={{ mb: 5 }}>
-        <Typography variant="h5">Sign in</Typography>
-        <Typography variant="body2" color="text.secondary">
-          Don’t have an account?
-          <Link variant="subtitle2" sx={{ ml: 0.5 }}>
-            Get started
-          </Link>
-        </Typography>
-      </Box>
-
-      {renderForm}
-
-      <Divider sx={{ my: 3, '&::before, &::after': { borderTopStyle: 'dashed' } }}>
-        <Typography
-          variant="overline"
-          sx={{ color: 'text.secondary', fontWeight: 'fontWeightMedium' }}
-        >
-          OR
-        </Typography>
-      </Divider>
-
-      <Box gap={1} display="flex" justifyContent="center">
-        <IconButton color="inherit">
-          <Iconify icon="logos:google-icon" />
-        </IconButton>
-        <IconButton color="inherit">
-          <Iconify icon="eva:github-fill" />
-        </IconButton>
-        <IconButton color="inherit">
-          <Iconify icon="ri:twitter-x-fill" />
-        </IconButton>
-      </Box>
-    </>
+ <Box sx={{ mt:3 }}>
+  <Divider sx={{ my:3, '&:before, &:after': {borderTopStyle: 'dashed'} }}>
+    <Typography variant="overline" sx={{ color: 'text.secondary', fontWeight: 'fontWeightMedium' }}>
+      OR
+    </Typography>
+  </Divider>
+ </Box>
+ </Box>
   );
 }

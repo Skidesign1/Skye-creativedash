@@ -73,16 +73,15 @@ export function NavDesktop({
   );
 }
 
-// ----------------------------------------------------------------------
 
-export function NavMobile({
-  sx,
+export function NavMobile ({
+ sx,
   data,
   open,
   slots,
   onClose,
   workspaces,
-}: NavContentProps & { open: boolean; onClose: () => void }) {
+ }: NavContentProps & { open: boolean; onClose: () => void }) {
   const pathname = usePathname();
 
   useEffect(() => {
@@ -92,8 +91,8 @@ export function NavMobile({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
-  return (
-    <Drawer
+   return (
+     <Drawer
       open={open}
       onClose={onClose}
       sx={{
@@ -107,14 +106,14 @@ export function NavMobile({
         },
       }}
     >
-      <NavContent data={data} slots={slots} workspaces={workspaces} />
-    </Drawer>
+   <NavContent data={data} slots={slots} workspaces={workspaces} />
+   </Drawer>
   );
-}
+ } 
 
-// ----------------------------------------------------------------------
 
-export function NavContent({ data, slots, workspaces, sx }: NavContentProps) {
+
+ export function NavContent({ data, slots, workspaces, sx }: NavContentProps) {
   const pathname = usePathname();
 
   return (
@@ -175,8 +174,9 @@ export function NavContent({ data, slots, workspaces, sx }: NavContentProps) {
       </Scrollbar>
 
       {slots?.bottomArea}
+      
 
       <NavUpgrade />
     </>
   );
-}
+} 

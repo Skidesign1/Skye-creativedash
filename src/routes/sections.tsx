@@ -5,17 +5,20 @@ import Box from '@mui/material/Box';
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
 
 import { varAlpha } from 'src/theme/styles';
-import { AuthLayout } from 'src/layouts/auth';
+// import PrivateRoute from './components/PrivateRoute';
 import { DashboardLayout } from 'src/layouts/dashboard';
+import { AuthLayout } from 'src/layouts/auth';
+
+
 
 // ----------------------------------------------------------------------
-
-export const HomePage = lazy(() => import('src/pages/home'));
-export const BlogPage = lazy(() => import('src/pages/blog'));
-export const UserPage = lazy(() => import('src/pages/user'));
 export const SignInPage = lazy(() => import('src/pages/sign-in'));
+export const HomePage = lazy(() => import('src/pages/home'));
+ export const BlogPage = lazy(() => import('src/pages/blog'));
+  export const UserPage = lazy(() => import('src/pages/user'));
 export const ProductsPage = lazy(() => import('src/pages/products'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
+
 
 // ----------------------------------------------------------------------
 
@@ -35,35 +38,43 @@ const renderFallback = (
 export function Router() {
   return useRoutes([
     {
+      path: '/',
+      element: <SignInPage/>
+    },
+   
+    {
+    path:'/dashboard',
       element: (
         <DashboardLayout>
-          <Suspense fallback={renderFallback}>
-            <Outlet />
-          </Suspense>
-        </DashboardLayout>
+           <Outlet/>  
+          </DashboardLayout>
       ),
       children: [
-        { element: <HomePage />, index: true },
-        { path: 'user', element: <UserPage /> },
-        { path: 'products', element: <ProductsPage /> },
-        { path: 'blog', element: <BlogPage /> },
+        {
+          index: true,
+           element: <Navigate to="/dashboard/home" replace />
+           },
+        { 
+          path: 'home',
+           element:<HomePage />
+           },
+       // { path: 'user', element: <UserPage /> },
+         { 
+          path: 'products', 
+          element: <ProductsPage />
+         },
+      // { path: 'blog', element: <BlogPage /> },
       ],
     },
+
+   // {
+    //  path:'404',
+    //  element: <Page404 />
+   // },
+   
     {
-      path: 'sign-in',
-      element: (
-        <AuthLayout>
-          <SignInPage />
-        </AuthLayout>
-      ),
-    },
-    {
-      path: '404',
-      element: <Page404 />,
-    },
-    {
-      path: '*',
-      element: <Navigate to="/404" replace />,
+     path: '*',
+     element: <Navigate to="/dashboard/products" replace />,
     },
   ]);
 }

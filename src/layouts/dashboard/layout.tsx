@@ -1,6 +1,7 @@
 import type { Theme, SxProps, Breakpoint } from '@mui/material/styles';
 
-import { useState } from 'react';
+import { ReactNode,  useState } from 'react';
+import { Outlet } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
@@ -23,60 +24,63 @@ import { AccountPopover } from '../components/account-popover';
 import { LanguagePopover } from '../components/language-popover';
 import { NotificationsPopover } from '../components/notifications-popover';
 
+
 // ----------------------------------------------------------------------
 
 export type DashboardLayoutProps = {
   sx?: SxProps<Theme>;
-  children: React.ReactNode;
-  header?: {
-    sx?: SxProps<Theme>;
-  };
+  children: ReactNode;
+  header?: ReactNode;
+    // sx?: SxProps<Theme>;
+  
 };
 
 export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) {
   const theme = useTheme();
 
-  const [navOpen, setNavOpen] = useState(false);
+   const [navOpen, setNavOpen] = useState(false);
 
   const layoutQuery: Breakpoint = 'lg';
 
-  return (
+   return (
     <LayoutSection
       /** **************************************
        * Header
        *************************************** */
       headerSection={
         <HeaderSection
-          layoutQuery={layoutQuery}
-          slotProps={{
-            container: {
-              maxWidth: false,
-              sx: { px: { [layoutQuery]: 5 } },
-            },
-          }}
-          sx={header?.sx}
-          slots={{
+         layoutQuery={layoutQuery}
+        slotProps={{
+          container: {
+            maxWidth: false,
+            sx: { px: { [layoutQuery]: 5 } },
+           },
+         }}
+         sx={{ px: 2}}
+         slots={{
             topArea: (
-              <Alert severity="info" sx={{ display: 'none', borderRadius: 0 }}>
-                This is an info Alert.
-              </Alert>
+             <Alert severity="info" sx={{ display: 'none', borderRadius: 0 }}>
+               This is an info Alert.
+             </Alert>
             ),
             leftArea: (
               <>
                 <MenuButton
-                  onClick={() => setNavOpen(true)}
-                  sx={{
+                 onClick={() => setNavOpen(true)}
+                 sx={{
                     ml: -1,
                     [theme.breakpoints.up(layoutQuery)]: { display: 'none' },
                   }}
-                />
-                <NavMobile
+                 />
+                
+                 <NavMobile
                   data={navData}
-                  open={navOpen}
-                  onClose={() => setNavOpen(false)}
+                 open={navOpen}
+                 onClose={() => setNavOpen(false)}
                   workspaces={_workspaces}
                 />
-              </>
+                
+               </>
             ),
             rightArea: (
               <Box gap={1} display="flex" alignItems="center">
@@ -136,6 +140,7 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
       }}
     >
       <Main>{children}</Main>
+      <Outlet />
     </LayoutSection>
   );
 }

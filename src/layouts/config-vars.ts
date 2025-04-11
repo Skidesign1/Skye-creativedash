@@ -4,8 +4,7 @@ import { varAlpha } from 'src/theme/styles';
 
 // ----------------------------------------------------------------------
 
-export const baseVars = (theme: Theme) => ({
-  // nav
+ export const baseVars = (theme: Theme) => ({
   '--layout-nav-bg': theme.vars.palette.common.white,
   '--layout-nav-border-color': varAlpha(theme.vars.palette.grey['500Channel'], 0.08),
   '--layout-nav-zIndex': 1101,
